@@ -1,0 +1,70 @@
+# deploy go docker to tx cloud
+
+name: Build and deploy a container to tx cloud
+
+env:
+  GO_WEBAPP_NAME: wx-mp   # set this to your application's name
+
+on:
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: 'read'
+  packages: 'write'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to tencentyun container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
+      - name: Build and push container image to registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_NAMESPACE }}/wx-mp:latest
+          file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Lowercase the repo name
+        run: |
+          echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+          echo "DEPLOY_IMAGE_NAME=${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_NAMESPACE }}/wx-mp:latest" >>${GITHUB_ENV}
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.CLOUD_HOST }}
+          username: ${{ secrets.CLOUD_USERNAME }}
+          key: ${{ secrets.CLOUD_KEY }}
+          script: |
+            docker stop wx-mp
+            docker rm -f wx-mp
+            docker rmi -f ${{ env.DEPLOY_IMAGE_NAME }}
+            docker login --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
+            docker pull ${{ env.DEPLOY_IMAGE_NAME }}
+            docker run -d --name wx-mp -p 80:8888 ${{ env.DEPLOY_IMAGE_NAME }}
