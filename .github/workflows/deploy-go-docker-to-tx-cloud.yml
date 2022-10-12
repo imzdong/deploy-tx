@@ -50,7 +50,7 @@ jobs:
     needs: build
 
     steps:
-      - name: Lowercase the repo name
+      - name: Lowercase the name
         run: |
           echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
           echo "DEPLOY_IMAGE_NAME=${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_NAMESPACE }}/wx-mp:latest" >>${GITHUB_ENV}
