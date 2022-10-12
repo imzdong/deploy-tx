@@ -33,6 +33,6 @@ jobs:
           password: ${{ secrets.CLOUD_KEY }}
           port: 22
           script: |
-            docker login ${{ secrets.DOCKER_REGISTRY }} --username=${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }} 
+            docker login ${{ secrets.DOCKER_REGISTRY }} --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} 
             docker pull ${{ env.DEPLOY_IMAGE_NAME }}
             docker run -d --name wx-mp -p 80:8888 ${{ env.DEPLOY_IMAGE_NAME }}
