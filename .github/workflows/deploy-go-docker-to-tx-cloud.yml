@@ -20,4 +20,7 @@ jobs:
     steps:
       - name: Get version
         id: version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+        run: |
+          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+          echo "${GITHUB_REF/refs\/tags\//}"
+          echo "${{VERSION}}"
