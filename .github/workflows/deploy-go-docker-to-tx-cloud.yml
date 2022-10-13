@@ -28,9 +28,10 @@ jobs:
           echo "first num"
           cat version.txt | head -n 1
           echo "2 num"
-          cat version.txt | tail -n 1
-          echo "    "
+          b=${cat version.txt | tail -n 1}
+          echo "  dddd  "
+          echo ${b}
           
-          echo "##[set-output name=version;]VERSION=${cat version.txt | head -n 1}"
+          echo "version=${b}" >>${GITHUB_ENV}
           echo "----envvvvvvvvv---"
           echo "${env.version}"
