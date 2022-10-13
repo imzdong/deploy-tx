@@ -28,7 +28,7 @@ jobs:
           echo "first num"
           cat version.txt | head -n 1
           echo "2 num"
-          b=${cat version.txt | tail -n 1}
+          b=cat version.txt | tail -n 1
           echo "  dddd  "
           echo ${b}
           
