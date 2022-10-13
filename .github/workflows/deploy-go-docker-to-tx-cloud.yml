@@ -18,7 +18,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - name: Get version
         id: version
         run: |
-          echo "${GITHUB_REF/refs\/tags\//}"
+          cat version.txt
+          echo "first num"
+          cat version.txt | head -n 1
+          echo "2 num"
+          cat version.txt | head -n 2
+          
+          echo "version=${cat version.txt | head -n 1}" >>${GITHUB_ENV}
+          echo "${env.version}"
