@@ -32,6 +32,6 @@ jobs:
           echo "    "
           
           
-          echo version=${cat version.txt | head -n 1} >>${GITHUB_ENV}
+          echo version="${cat version.txt | head -n 1}" >>${GITHUB_ENV}
           echo "----envvvvvvvvv---"
           echo "${env.version}"
