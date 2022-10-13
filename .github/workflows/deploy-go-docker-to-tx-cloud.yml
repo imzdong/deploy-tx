@@ -38,10 +38,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Get image names
-          run: |
-            echo "BASE_IMAGE_NAME=${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_NAMESPACE }}/${{ env.APP_NAME }}" >>${GITHUB_ENV} 
-            echo "DEPLOY_IMAGE_NAME=${{ env.BASE_IMAGE_NAME }}:${{ env.CUREENT_VERSION }}" >>${GITHUB_ENV} 
-            echo "DEL_IMAGE_NAME=${{ env.BASE_IMAGE_NAME }}:${{ env.PRE_VERSION }}" >>${GITHUB_ENV} 
+        run: |
+          echo "BASE_IMAGE_NAME=${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKER_NAMESPACE }}/${{ env.APP_NAME }}" >>${GITHUB_ENV} 
+          echo "DEPLOY_IMAGE_NAME=${{ env.BASE_IMAGE_NAME }}:${{ env.CUREENT_VERSION }}" >>${GITHUB_ENV} 
+          echo "DEL_IMAGE_NAME=${{ env.BASE_IMAGE_NAME }}:${{ env.PRE_VERSION }}" >>${GITHUB_ENV} 
 
       - name: Build and push container image to registry
         uses: docker/build-push-action@v2
