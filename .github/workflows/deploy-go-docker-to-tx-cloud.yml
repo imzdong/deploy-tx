@@ -31,7 +31,6 @@ jobs:
           cat version.txt | tail -n 1
           echo "    "
           
-          
-          echo version="${cat version.txt | head -n 1}" >>${GITHUB_ENV}
+          echo "##[set-output name=version;]VERSION=${cat version.txt | head -n 1}"
           echo "----envvvvvvvvv---"
           echo "${env.version}"
