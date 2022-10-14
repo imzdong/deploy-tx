@@ -24,17 +24,6 @@ func main() {
 	router.POST("/wx", WXMsgReceive)
 
 	router.Run(":8888")
-
-	/*http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello go, docker"))
-	})
-	server := &http.Server{
-		Addr: ":8888",
-	}
-	fmt.Println("server startup...")
-	if err := server.ListenAndServe(); err != nil {
-		fmt.Printf("server startup failed, err:%v\n", err)
-	}*/
 }
 
 // WXTextMsg 微信文本消息结构体

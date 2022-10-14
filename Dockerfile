@@ -13,7 +13,7 @@ WORKDIR /build
 # 将代码复制到容器中
 COPY . .
 
-WORKDIR cmd
+#WORKDIR cmd
 
 # 将我们的代码编译成二进制可执行文件app
 RUN go build -o app
